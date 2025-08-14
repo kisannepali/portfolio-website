@@ -341,8 +341,8 @@ function calculateBMI() {
   document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById('ktm-temp');
     fetch('/temperature', { cache: 'no-store' })
-      .then(res => res.json())                 // Use this if your server returns JSON: { message: "The temperature of Kathmandu is X°C." }
-      .then(data => { el.textContent = data.message; })
+      .then(res => res.text())
+      .then(text => { el.textContent = text; })
       .catch(() => { el.textContent = 'Temperature unavailable.'; });
   });
 </script>

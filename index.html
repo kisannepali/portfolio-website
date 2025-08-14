@@ -333,20 +333,15 @@ function calculateBMI() {
             });
         });
     </script>
-    <!-- Kathmandu Temperature Display -->
-<p id="temperature" style="text-align:center; font-size:1.2rem; margin-top:20px;">
-    Loading temperature...
-</p>
 
 <script>
-    fetch("/temperature")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("temperature").textContent = data.message;
-        })
-        .catch(() => {
-            document.getElementById("temperature").textContent = "Unable to fetch temperature.";
-        });
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('ktm-temp');
+    fetch('/temperature', { cache: 'no-store' })
+      .then(res => res.json())                 // Use this if your server returns JSON: { message: "The temperature of Kathmandu is X°C." }
+      .then(data => { el.textContent = data.message; })
+      .catch(() => { el.textContent = 'Temperature unavailable.'; });
+  });
 </script>
 
 </body>

@@ -1,161 +1,232 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Kisan Nepali Orthopedics</title>
+    <meta name="description" content="Orthopedic care by Dr. Kisan Nepali, Consultant Orthopedic Surgeon in Lalitpur, Nepal. Specializing in joint replacements, sports injuries, and fracture care. Book your appointment today.">
+    <meta name="keywords" content="orthopedic surgeon Nepal, joint replacement, sports medicine, fracture care, Dr. Kisan Nepali">
+    <meta name="author" content="Dr. Kisan Nepali Orthopedic Clinic">
+    <title>Dr. Kisan Nepali - Orthopedic Care</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        #weather {
-            margin: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        body {
+            font-family: 'Roboto', sans-serif;
         }
-        #weather h3 {
-            margin-top: 0;
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom hero image */
+        .hero-bg {
+            background-image: url('https://via.placeholder.com/1920x600?text=Orthopedic+Care');
+            background-size: cover;
+            background-position: center;
         }
     </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <h1>Dr. Kisan Nepali Orthopedics</h1>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#appointment">Book Appointment</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="home">
-        <h2>Expert Orthopedic Care in Nepal</h2>
-        <p>Dr. Kisan Nepali, Consultant Orthopedic Surgeon, specializes in joint replacements, sports injuries, and fracture care.</p>
-        <a href="#appointment">Schedule Your Visit</a>
-    </section>
-
-    <section id="about">
-        <h2>About Dr. Kisan Nepali</h2>
-        <div>
-            <img src="kisanimage.jpg" alt="Dr. Kisan Nepali" style="max-width: 200px; float: left; margin-right: 20px;">
-            <p>Dr. Kisan Nepali is a board-certified Consultant Orthopedic Surgeon with over 7 years of experience in orthopedic surgery and trauma care. Currently serving at Bajrabarahi Chapagaon Hospital, Lalitpur, he specializes in joint replacements, sports injuries, and fracture care, delivering patient-centered treatment plans.</p>
-            <p>As former Medical Superintendent (2019–2021), Dr. Nepali led initiatives to expand hospital services, earning an Appreciation Award from Godawari Municipality. He holds a Postgraduate Degree in Orthopedic Surgery from Maharajgunj Medical Campus, where he received the Dean’s List and Medical Research Award.</p>
-            <a href="#">Learn More About Our Practice</a>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">Dr. Kisan Nepali Orthopedics</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#home" class="text-gray-600 hover:text-blue-600 px-3 py-2">Home</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-600 px-3 py-2">About</a>
+                    <a href="#services" class="text-gray-600 hover:text-blue-600 px-3 py-2">Services</a>
+                    <a href="#resources" class="text-gray-600 hover:text-blue-600 px-3 py-2">Resources</a>
+                    <a href="#contact" class="text-gray-600 hover:text-blue-600 px-3 py-2">Contact</a>
+                    <a href="#appointment" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Appointment</a>
+                </div>
+            </div>
         </div>
-    </section>
+    </nav>
 
-    <section id="services">
-        <h2>Our Services</h2>
-        <div>
-            <h3>Joint Replacement</h3>
-            <p>Expert care for hip, knee, and shoulder replacements using minimally invasive techniques to restore mobility.</p>
-        </div>
-        <div>
-            <h3>Sports Medicine</h3>
-            <p>Comprehensive treatment for sports injuries, including arthroscopy and rehabilitation programs.</p>
-        </div>
-        <div>
-            <h3>Fracture Care</h3>
-            <p>Advanced management of fractures, ensuring optimal recovery and function restoration.</p>
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg h-96 flex items-center justify-center text-center text-white">
+        <div class="bg-black bg-opacity-50 p-8 rounded">
+            <h2 class="text-4xl font-bold mb-4">Expert Orthopedic Care in Nepal</h2>
+            <p class="text-lg mb-6">Dr. Kisan Nepali, Consultant Orthopedic Surgeon, specializes in joint replacements, sports injuries, and fracture care.</p>
+            <a href="#appointment" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">Schedule Your Visit</a>
         </div>
     </section>
 
-    <section id="resources">
-        <h2>Patient Resources</h2>
-        <div>
-            <h3>Common Conditions</h3>
-            <ul>
-                <li>Osteoarthritis</li>
-                <li>ACL Injuries</li>
-                <li>Fractures</li>
-            </ul>
-        </div>
-        <div>
-            <h3>Patient Guides</h3>
-            <ul>
-                <li>Pre-Operative Checklist</li>
-                <li>Post-Surgery Recovery Tips</li>
-                <li>New Patient Forms</li>
-            </ul>
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">About Dr. Kisan Nepali</h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <img src="https://via.placeholder.com/400x400?text=Dr.+Kisan+Nepali" alt="Dr. Kisan Nepali" class="w-64 h-64 rounded-full mb-6 md:mb-0 md:mr-8">
+                <div>
+                    <p class="text-lg mb-4">Dr. Kisan Nepali is a board-certified Consultant Orthopedic Surgeon with over 7 years of experience in orthopedic surgery and trauma care. Currently serving at Bajrabarahi Chapagaon Hospital, Lalitpur, he specializes in joint replacements, sports injuries, and fracture care, delivering patient-centered treatment plans.</p>
+                    <p class="text-lg mb-4">As former Medical Superintendent (2019–2021), Dr. Nepali led initiatives to expand hospital services, earning an Appreciation Award from Godawari Municipality. He holds a Postgraduate Degree in Orthopedic Surgery from Maharajgunj Medical Campus, where he received the Dean’s List and Medical Research Award.</p>
+                    <a href="#contact" class="text-blue-600 hover:underline">Learn More About Our Practice</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="appointment">
-        <h2>Book an Appointment</h2>
-        <div>
-            <p>Schedule your appointment with Dr. Kisan Nepali. We accept most major insurance plans.</p>
-            <a href="#">Schedule Online</a>
-            <p>Call us at: +977 9862567588</p>
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold mb-4">Joint Replacement</h3>
+                    <p class="text-gray-600">Expert care for hip, knee, and shoulder replacements using minimally invasive techniques to restore mobility.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold mb-4">Sports Medicine</h3>
+                    <p class="text-gray-600">Comprehensive treatment for sports injuries, including arthroscopy and rehabilitation programs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold mb-4">Fracture Care</h3>
+                    <p class="text-gray-600">Advanced management of fractures, ensuring optimal recovery and function restoration.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="testimonials">
-        <h2>What Our Patients Say</h2>
-        <div>
-            <p>"Dr. Nepali’s expertise in joint replacement gave me my mobility back. Highly professional and caring!"</p>
-            <p>— Patient A</p>
-        </div>
-        <div>
-            <p>"The fracture care I received was exceptional. Dr. Nepali and his team are outstanding."</p>
-            <p>— Patient B</p>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <div>
-            <h3>Get in Touch</h3>
-            <p>Address: Lalitpur, Mahalaxmi-8, Shankhadevi, Nepal</p>
-            <p>Phone: +977 9862567588</p>
-            <p>Email: kisannepalu@gmail.com</p>
-            <p>Office Hours: Mon-Fri, 8 AM - 5 PM</p>
-        </div>
-        <div>
-            <h3>Find Us</h3>
-            <iframe src="https://www.google.com/maps/embed?pb="></iframe>
+    <!-- Patient Resources Section -->
+    <section id="resources" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Patient Resources</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Common Conditions</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li><a href="#" class="hover:text-blue-600">Osteoarthritis</a></li>
+                        <li><a href="#" class="hover:text-blue-600">ACL Injuries</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Fractures</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Patient Guides</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li><a href="#" class="hover:text-blue-600">Pre-Operative Checklist</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Post-Surgery Recovery Tips</a></li>
+                        <li><a href="#" class="hover:text-blue-600">New Patient Forms</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="weather">
-        <h3>Current Weather in Kathmandu</h3>
-        <div id="weather-info">Loading weather data...</div>
+    <!-- Appointment Booking Section -->
+    <section id="appointment" class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Book an Appointment</h2>
+            <div class="bg-white p-8 rounded-lg shadow max-w-lg mx-auto">
+                <p class="text-lg text-gray-600 mb-4">Schedule your appointment with Dr. Kisan Nepali. We accept most major insurance plans.</p>
+                <a href="https://example.com/scheduling" target="_blank" class="block bg-blue-600 text-white text-center px-6 py-3 rounded hover:bg-blue-700">Schedule Online</a>
+                <p class="text-gray-600 mt-4">Call us at: <a href="tel:+9779862567588" class="text-blue-600 hover:underline">+977 9862567588</a></p>
+            </div>
+        </div>
     </section>
 
-    <footer>
-        <p>© 2025 Dr. Kisan Nepali Orthopedic Clinic. All rights reserved.</p>
-        <div>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">What Our Patients Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-100 p-6 rounded-lg">
+                    <p class="text-gray-600 italic">"Dr. Nepali’s expertise in joint replacement gave me my mobility back. Highly professional and caring!"</p>
+                    <p class="text-right font-semibold mt-4">— Patient A</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg">
+                    <p class="text-gray-600 italic">"The fracture care I received was exceptional. Dr. Nepali and his team are outstanding."</p>
+                    <p class="text-right font-semibold mt-4">— Patient B</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Contact Us</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Get in Touch</h3>
+                    <p class="text-gray-600">Address: Lalitpur, Mahalaxmi-8, Shankhadevi, Nepal</p>
+                    <p class="text-gray-600">Phone: <a href="tel:+9779862567588" class="text-blue-600 hover:underline">+977 9862567588</a></p>
+                    <p class="text-gray-600">Email: <a href="mailto:kisannepalu@gmail.com" class="text-blue-600 hover:underline">kisannepalu@gmail.com</a></p>
+                    <p class="text-gray-600 mt-4">Office Hours: Mon-Fri, 8 AM - 5 PM</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Find Us</h3>
+                    <iframe class="w-full h-64 rounded" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.456789012345!2d85.3256983150625!3d27.670689982804567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1b0a4f6a8f3b%3A0x4e3f7a6b2c8f1a2d!2sMahalaxmi%2C%20Lalitpur%2044700%2C%20Nepal!5e0!3m2!1sen!2snp!4v1698765432109" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Dr. Kisan Nepali Orthopedic Clinic. All rights reserved.</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="hover:text-gray-200">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-200">Terms of Service</a>
+            </div>
         </div>
     </footer>
 
+    <!-- JavaScript for basic interactivity -->
     <script>
-        // Fetch weather data for Kathmandu
-        fetch('http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=yes')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch weather data');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const weatherDiv = document.getElementById('weather-info');
-                const temp = data.current.temp_c;
-                const condition = data.current.condition.text;
-                const aqi = data.current.air_quality['us-epa-index'];
-                weatherDiv.innerHTML = `
-                    <p>Temperature: ${temp}°C</p>
-                    <p>Condition: ${condition}</p>
-                    <p>Air Quality Index (US EPA): ${aqi}</p>
-                `;
-            })
-            .catch(error => {
-                console.error('Error fetching weather:', error);
-                document.getElementById('weather-info').innerHTML = 'Unable to load weather data.';
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
+        });
     </script>
 </body>
 </html>

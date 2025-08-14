@@ -196,7 +196,46 @@
                     <p class="text-gray-600">Phone: <a href="tel:+9779862567588" class="text-blue-600 hover:underline">+977 9862567588</a></p>
                     <p class="text-gray-600">Email: <a href="mailto:kisannepalu@gmail.com" class="text-blue-600 hover:underline">kisannepalu@gmail.com</a></p>
                     <p class="text-gray-600 mt-4">Office Hours: Mon-Fri, 8 AM - 5 PM</p>
-                    <p class="text-r=gray-600"><strong>"Kathmandu Temperature"${data.current.temp_c}°C</strong></p>
+                    <p <!DOCTYPE html>
+<html>
+<head>
+    <title>Kathmandu Temperature</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f0f8ff;
+        }
+        p {
+            font-size: 1.5rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <p id="temperature">Loading temperature...</p>
+
+    <script>
+        const apiUrl = "http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=no";
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("temperature").textContent =
+                    `The temperature of Kathmandu is ${data.current.temp_c}°C.`;
+            })
+            .catch(error => {
+                document.getElementById("temperature").textContent = "Unable to fetch temperature.";
+                console.error(error);
+            });
+    </script>
+
+</body>
+</html>
+ 
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Find Us</h3>

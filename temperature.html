@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kathmandu Weather</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #87ceeb, #f0f8ff);
+            padding: 50px;
+        }
+        #weather {
+            background: white;
+            padding: 20px;
+            margin: auto;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        img {
+            width: 64px;
+            height: 64px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Weather in Kathmandu</h1>
+    <div id="weather">
+        <p>Loading weather data...</p>
+    </div>
+
+    <script>
+        const apiUrl = "http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=no";
+
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not OK");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const weatherDiv = document.getElementById("weather");
+                weatherDiv.innerHTML = `
+                    <h2>${data.location.name}, ${data.location.country}</h2>
+                    <img src="${data.current.condition.icon}" alt="${data.current.condition.text}">
+                    <p><strong>${data.current.temp_c}°C</strong></p>
+                    <p>${data.current.condition.text}</p>
+                    <p>Humidity: ${data.current.humidity}%</p>
+                    <p>Wind: ${data.current.wind_kph} kph</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById("weather").innerHTML = "<p>Error fetching weather data.</p>";
+                console.error("Fetch error:", error);
+            });
+    </script>
+
+</body>
+</html>

@@ -300,27 +300,7 @@ function calculateBMI() {
         }
     </style>
 </head>
-<!-- Kathmandu Temperature Display -->
-<p id="temperature" style="text-align:center; font-size:1.2rem; margin-top:20px;">
-    Loading temperature...
-</p>
 
-<script>
-    fetch("/temperature")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("temperature").textContent = data.message;
-        })
-        .catch(() => {
-            document.getElementById("temperature").textContent = "Unable to fetch temperature.";
-        });
-</script>
-
-
-    
-    
-
- 
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Find Us</h3>

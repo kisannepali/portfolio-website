@@ -196,6 +196,31 @@
                     <p class="text-gray-600">Phone: <a href="tel:+9779862567588" class="text-blue-600 hover:underline">+977 9862567588</a></p>
                     <p class="text-gray-600">Email: <a href="mailto:kisannepalu@gmail.com" class="text-blue-600 hover:underline">kisannepalu@gmail.com</a></p>
                     <p class="text-gray-600 mt-4">Office Hours: Mon-Fri, 8 AM - 5 PM</p>
+                     <script>
+        // Fetch weather data for Kathmandu
+        fetch('http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=yes')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch weather data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const weatherDiv = document.getElementById('weather-info');
+                const temp = data.current.temp_c;
+                const condition = data.current.condition.text;
+                const aqi = data.current.air_quality['us-epa-index'];
+                weatherDiv.innerHTML = `
+                    <p>Temperature: ${temp}°C</p>
+                    <p>Condition: ${condition}</p>
+                    <p>Air Quality Index (US EPA): ${aqi}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching weather:', error);
+                document.getElementById('weather-info').innerHTML = 'Unable to load weather data.';
+            });
+    </script>
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold mb-4">Find Us</h3>

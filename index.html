@@ -213,7 +213,9 @@
                 <a href="#" class="hover:text-gray-200">Privacy Policy</a>
                 <a href="#" class="hover:text-gray-200">Terms of Service</a>
             </div>
-        </div><script>
+        </div>
+        </footer>
+        <script>
         // Fetch weather data for Kathmandu
         fetch('http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=yes')
             .then(response => {
@@ -238,7 +240,7 @@
                 document.getElementById('weather-info').innerHTML = 'Unable to load weather data.';
             });
     </script>
-    </footer>
+    
 
     <!-- JavaScript for basic interactivity -->
     <script>

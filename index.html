@@ -300,27 +300,25 @@ function calculateBMI() {
         }
     </style>
 </head>
-<body>
+<!-- Kathmandu Temperature Display -->
+<p id="temperature" style="text-align:center; font-size:1.2rem; margin-top:20px;">
+    Loading temperature...
+</p>
 
-    <p id="temperature">Loading temperature...</p>
+<script>
+    fetch("/temperature")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("temperature").textContent = data.message;
+        })
+        .catch(() => {
+            document.getElementById("temperature").textContent = "Unable to fetch temperature.";
+        });
+</script>
 
-    <script>
-        const apiUrl = "http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=no";
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("temperature").textContent =
-                    `The temperature of Kathmandu is ${data.current.temp_c}°C.`;
-            })
-            .catch(error => {
-                document.getElementById("temperature").textContent = "Unable to fetch temperature.";
-                console.error(error);
-            });
-    </script>
-
-</body>
-</html>
+    
+    
 
  
                 </div>

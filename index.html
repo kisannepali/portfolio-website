@@ -204,18 +204,7 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-blue-600 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2025 Dr. Kisan Nepali Orthopedic Clinic. All rights reserved.</p>
-            <div class="mt-4 flex justify-center space-x-4">
-                <a href="#" class="hover:text-gray-200">Privacy Policy</a>
-                <a href="#" class="hover:text-gray-200">Terms of Service</a>
-            </div>
-        </div>
-        </footer>
-        <script>
+ <script>
         // Fetch weather data for Kathmandu
         fetch('http://api.weatherapi.com/v1/current.json?key=f3a6064f08724bef91a15154251408&q=kathmandu&aqi=yes')
             .then(response => {
@@ -240,6 +229,17 @@
                 document.getElementById('weather-info').innerHTML = 'Unable to load weather data.';
             });
     </script>
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Dr. Kisan Nepali Orthopedic Clinic. All rights reserved.</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="hover:text-gray-200">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-200">Terms of Service</a>
+            </div>
+        </div>
+        </footer>
+       
     
 
     <!-- JavaScript for basic interactivity -->

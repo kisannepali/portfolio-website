@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kathmandu Temperature</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f0f8ff;
+        }
+        p {
+            font-size: 1.5rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <p id="temperature">Loading temperature...</p>
+
+    <script>
+        fetch("/temperature")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("temperature").textContent = data.message;
+            })
+            .catch(() => {
+                document.getElementById("temperature").textContent = "Unable to fetch temperature.";
+            });
+    </script>
+
+</body>
+</html>
